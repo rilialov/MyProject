@@ -8,8 +8,7 @@ public class Main {
     public static void main(String[] args) {
         String name = "";
         System.out.println("Hello! What is your name?");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             name = reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
