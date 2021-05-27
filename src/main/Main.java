@@ -1,5 +1,7 @@
 package main;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import java.io.*;
 import java.util.Properties;
 
@@ -11,10 +13,14 @@ public class Main {
     private static String phone, email;
     private static String course, trainer, date;
 
+    private static final String XML_OUT = "C:\\Java\\form.xml";
+
     public static void main(String[] args) {
         getAnswers();
         loadProperties();
         print();
+        Form form = new Form(course, trainer, date, name, lastname, phone, email);
+        saveToXML(form);
         close();
     }
 
@@ -65,6 +71,18 @@ public class Main {
             FR.close();
         } catch (IOException e) {
             System.err.println("Error: problems in close()");
+        }
+    }
+
+    private static void saveToXML(Form form) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(Form.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            File outFile = new File(XML_OUT);
+            m.marshal(form, outFile);
+        } catch (Exception e) {
+            System.err.println("Error: problems in saveToXML()");
         }
     }
 }
