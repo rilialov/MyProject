@@ -10,17 +10,17 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Form {
     private String course, trainer, date;
-    private String name, lastname;
+    private String firstname, lastname;
     private String phone, email;
 
     public Form() {
     }
 
-    public Form(String course, String trainer, String date, String name, String lastname, String phone, String email) {
+    public Form(String course, String trainer, String date, String firstname, String lastname, String phone, String email) {
         this.course = course;
         this.trainer = trainer;
         this.date = date;
-        this.name = name;
+        this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
         this.email = email;
@@ -38,8 +38,8 @@ public class Form {
         return date;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstname;
     }
 
     public String getLastname() {

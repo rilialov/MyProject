@@ -14,6 +14,9 @@ public class MainApp extends Application {
         loader.setLocation(MainApp.class.getResource("main.fxml"));
         AnchorPane pane = loader.load();
 
+        AppController controller = loader.getController();
+        loadFromXML(controller);
+
         stage.setScene(new Scene(pane));
         stage.setTitle("Form");
         stage.setMinWidth(400);
@@ -21,5 +24,16 @@ public class MainApp extends Application {
         stage.setWidth(400);
         stage.setHeight(400);
         stage.show();
+    }
+
+    private static void loadFromXML(AppController controller) {
+        Helper helper = new Helper();
+        helper.readFromXML();
+        Form form = helper.getForm();
+        controller.setCourse(form.getCourse());
+        controller.setTrainer(form.getTrainer());
+        controller.setDate(form.getDate());
+        controller.setFirstName(form.getFirstName());
+        controller.setLastName(form.getLastname());
     }
 }
