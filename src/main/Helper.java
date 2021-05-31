@@ -20,7 +20,7 @@ public class Helper {
         return form;
     }
 
-    private static void saveToXML(Form form) {
+    public void saveToXML(Form form) {
         try {
             JAXBContext context = JAXBContext.newInstance(Form.class);
             Marshaller m = context.createMarshaller();

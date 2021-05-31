@@ -1,5 +1,6 @@
 package main;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -25,6 +26,14 @@ public class AppController {
     @FXML
     private TextField email;
 
+    @FXML
+    private void saveAndExit() {
+        Helper helper = new Helper();
+        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
+        helper.saveToXML(form);
+        Platform.exit();
+    }
+
     public AppController() {
 
     }
@@ -47,5 +56,33 @@ public class AppController {
 
     public void setLastName(String text) {
         lastName.setText(text);
+    }
+
+    public String getCourse() {
+        return course.getText();
+    }
+
+    public String getTrainer() {
+        return trainer.getText();
+    }
+
+    public String getDate() {
+        return date.getText();
+    }
+
+    public String getFirstName() {
+        return firstName.getText();
+    }
+
+    public String getLastName() {
+        return lastName.getText();
+    }
+
+    public String getPhone() {
+        return phone.getText();
+    }
+
+    public String getEmail() {
+        return email.getText();
     }
 }

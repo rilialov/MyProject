@@ -38,5 +38,5 @@
         <TextField fx:id="phone" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="6" />
     </GridPane>
-    <Button layoutX="315.0" layoutY="342.0" mnemonicParsing="false" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+    <Button layoutX="315.0" layoutY="342.0" mnemonicParsing="false" onAction="#saveAndExit" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0" />
 </AnchorPane>
