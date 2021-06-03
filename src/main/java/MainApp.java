@@ -1,11 +1,14 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 
 public class MainApp extends Application {
+    private static AppController controller;
 
     public static void main(String[] args) {
         launch(args);
@@ -17,16 +20,20 @@ public class MainApp extends Application {
         loader.setLocation(MainApp.class.getResource("main.fxml"));
         AnchorPane pane = loader.load();
 
-        AppController controller = loader.getController();
+        controller = loader.getController();
         loadFromXML(controller);
 
         stage.setScene(new Scene(pane));
         stage.setTitle("Form");
-        stage.setMinWidth(400);
-        stage.setMinHeight(400);
+        stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
         stage.setWidth(400);
         stage.setHeight(400);
+        stage.setResizable(false);
         stage.show();
+    }
+
+    static void saveToCSV(Helper helper) {
+        helper.saveToCSV(controller);
     }
 
     private static void loadFromXML(AppController controller) {

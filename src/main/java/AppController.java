@@ -27,8 +27,9 @@ public class AppController {
     @FXML
     private void saveAndExit() {
         Helper helper = new Helper();
-        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
-        helper.saveToXML(form);
+//        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
+//        helper.saveToXML(form);
+        MainApp.saveToCSV(helper);
         Platform.exit();
     }
 

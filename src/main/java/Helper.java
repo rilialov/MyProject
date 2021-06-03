@@ -36,7 +36,27 @@ public class Helper {
             Unmarshaller un = jaxbContext.createUnmarshaller();
             form = (Form) un.unmarshal(new File(XML_IN));
         } catch (JAXBException e) {
-            e.printStackTrace();
+            System.err.println("Error: problems in readFromXML()");
+        }
+    }
+
+    public void saveToCSV (AppController controller) {
+        File file = new File("C:\\Java\\save.csv");
+        String string1 = "Course;Trainer;Date;First name;Last name;Phone;E-mail";
+        String string2 = controller.getCourse() + ";" +
+                controller.getTrainer() + ";" +
+                controller.getDate() + ";" +
+                controller.getFirstName() + ";" +
+                controller.getLastName() + ";" +
+                controller.getPhone() + ";" +
+                controller.getEmail() + ";";
+        String tmp = string1 + "\n" + string2;
+        try {
+            BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Cp1251"));
+            bufWriter.write(tmp);
+            bufWriter.close();
+        } catch (IOException e) {
+            System.err.println("Error: problems in saveToCSV()");
         }
     }
 }
