@@ -4,11 +4,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.FileInputStream;
 
 public class MainApp extends Application {
     private static AppController controller;
+    private static Window window;
 
     public static void main(String[] args) {
         launch(args);
@@ -23,6 +25,7 @@ public class MainApp extends Application {
         controller = loader.getController();
 
         stage.setScene(new Scene(pane));
+        window = stage.getScene().getWindow();
         stage.setTitle("Form");
         stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
         stage.setWidth(400);
@@ -33,5 +36,9 @@ public class MainApp extends Application {
 
     public static AppController getController() {
         return controller;
+    }
+
+    public static Window getWindow() {
+        return window;
     }
 }

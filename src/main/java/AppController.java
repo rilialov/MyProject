@@ -1,9 +1,13 @@
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class AppController {
-    private Helper helper = new Helper();
+    private final Helper helper = new Helper();
 
     @FXML
     private TextField course;
@@ -33,28 +37,36 @@ public class AppController {
 
     @FXML
     private void saveToCSV() {
-        helper.saveToCSV(MainApp.getController());
+        String path = chooseDirectory() + "\\form.csv";
+        helper.saveToCSV(MainApp.getController(), path);
     }
 
     @FXML
     private void saveToXML() {
+        String path = chooseDirectory() + "\\form.xml";
         Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
-        helper.saveToXML(form);
+        helper.saveToXML(form, path);
     }
 
     @FXML
     private void loadFromXML() {
-        helper.readFromXML();
-        Form form = helper.getForm();
-        setCourse(form.getCourse());
-        setTrainer(form.getTrainer());
-        setDate(form.getDate());
-        setFirstName(form.getFirstName());
-        setLastName(form.getLastname());
+        FileChooser dialog = new FileChooser();
+        dialog.setTitle("Выбор файла для сохранения..");
+        dialog.setInitialDirectory(new File("C:\\"));
+        dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML файлы", "*.xml"));
+        File result = dialog.showOpenDialog(MainApp.getWindow());
+        if (result != null) {
+            helper.readFromXML(result);
+            Form form = helper.getForm();
+            setCourse(form.getCourse());
+            setTrainer(form.getTrainer());
+            setDate(form.getDate());
+            setFirstName(form.getFirstName());
+            setLastName(form.getLastname());
+        }
     }
 
     public AppController() {
-
     }
 
     private void setCourse(String text) {
@@ -103,5 +115,13 @@ public class AppController {
 
     public String getEmail() {
         return email.getText();
+    }
+
+    private String chooseDirectory () {
+        DirectoryChooser dialog = new DirectoryChooser();
+        dialog.setTitle("Выбор директории для сохранения..");
+        dialog.setInitialDirectory(new File("C:\\"));
+        File result = dialog.showDialog(MainApp.getWindow());
+        return result.toString();
     }
 }
