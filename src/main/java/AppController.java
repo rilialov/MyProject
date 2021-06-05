@@ -3,6 +3,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 public class AppController {
+    private Helper helper = new Helper();
+
     @FXML
     private TextField course;
 
@@ -25,35 +27,53 @@ public class AppController {
     private TextField email;
 
     @FXML
-    private void saveAndExit() {
-        Helper helper = new Helper();
-//        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
-//        helper.saveToXML(form);
-        MainApp.saveToCSV(helper);
+    private void exit() {
         Platform.exit();
+    }
+
+    @FXML
+    private void saveToCSV() {
+        helper.saveToCSV(MainApp.getController());
+    }
+
+    @FXML
+    private void saveToXML() {
+        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
+        helper.saveToXML(form);
+    }
+
+    @FXML
+    private void loadFromXML() {
+        helper.readFromXML();
+        Form form = helper.getForm();
+        setCourse(form.getCourse());
+        setTrainer(form.getTrainer());
+        setDate(form.getDate());
+        setFirstName(form.getFirstName());
+        setLastName(form.getLastname());
     }
 
     public AppController() {
 
     }
 
-    public void setCourse(String text) {
+    private void setCourse(String text) {
         course.setText(text);
     }
 
-    public void setTrainer(String text) {
+    private void setTrainer(String text) {
         trainer.setText(text);
     }
 
-    public void setDate(String text) {
+    private void setDate(String text) {
         date.setText(text);
     }
 
-    public void setFirstName(String text) {
+    private void setFirstName(String text) {
         firstName.setText(text);
     }
 
-    public void setLastName(String text) {
+    private void setLastName(String text) {
         lastName.setText(text);
     }
 

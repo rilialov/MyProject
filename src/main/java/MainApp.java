@@ -21,7 +21,6 @@ public class MainApp extends Application {
         AnchorPane pane = loader.load();
 
         controller = loader.getController();
-        loadFromXML(controller);
 
         stage.setScene(new Scene(pane));
         stage.setTitle("Form");
@@ -32,18 +31,7 @@ public class MainApp extends Application {
         stage.show();
     }
 
-    static void saveToCSV(Helper helper) {
-        helper.saveToCSV(controller);
-    }
-
-    private static void loadFromXML(AppController controller) {
-        Helper helper = new Helper();
-        helper.readFromXML();
-        Form form = helper.getForm();
-        controller.setCourse(form.getCourse());
-        controller.setTrainer(form.getTrainer());
-        controller.setDate(form.getDate());
-        controller.setFirstName(form.getFirstName());
-        controller.setLastName(form.getLastname());
+    public static AppController getController() {
+        return controller;
     }
 }
