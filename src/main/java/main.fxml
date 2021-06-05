@@ -48,7 +48,7 @@
             <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" onAction="#info" text="About" />
         </Menu>
     </MenuBar>
 </AnchorPane>

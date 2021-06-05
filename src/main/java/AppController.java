@@ -1,10 +1,16 @@
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class AppController {
     private final Helper helper = new Helper();
@@ -64,6 +70,22 @@ public class AppController {
             setFirstName(form.getFirstName());
             setLastName(form.getLastname());
         }
+    }
+
+    @FXML
+    private void info() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("About");
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        try {
+            stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: problems with icon file loading");
+        }
+        dialog.setHeaderText("About this program");
+        dialog.setContentText("This is program for practice");
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.show();
     }
 
     public AppController() {

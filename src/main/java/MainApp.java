@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MainApp extends Application {
     private static AppController controller;
@@ -17,17 +19,29 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("main.fxml"));
-        AnchorPane pane = loader.load();
+        AnchorPane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            System.err.println("Error: problems with fxml file loading");
+        }
 
         controller = loader.getController();
 
-        stage.setScene(new Scene(pane));
+        if (pane != null) {
+            stage.setScene(new Scene(pane));
+        }
+        
         window = stage.getScene().getWindow();
         stage.setTitle("Form");
-        stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+        try {
+            stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: problems with icon file loading");
+        }
         stage.setWidth(400);
         stage.setHeight(400);
         stage.setResizable(false);
