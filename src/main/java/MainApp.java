@@ -38,7 +38,7 @@ public class MainApp extends Application {
         window = stage.getScene().getWindow();
         stage.setTitle("Form");
         try {
-            stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+            stage.getIcons().add(new Image(new FileInputStream(System.getProperty("user.dir") + "\\icon.png")));
         } catch (FileNotFoundException e) {
             System.err.println("Error: problems with icon file loading");
         }

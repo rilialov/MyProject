@@ -43,22 +43,28 @@ public class AppController {
 
     @FXML
     private void saveToCSV() {
-        String path = chooseDirectory() + "\\form.csv";
-        helper.saveToCSV(MainApp.getController(), path);
+        String dir = chooseDirectory();
+        if (!dir.equals("")) {
+            String path = dir + "\\form.csv";
+            helper.saveToCSV(MainApp.getController(), path);
+        }
     }
 
     @FXML
     private void saveToXML() {
-        String path = chooseDirectory() + "\\form.xml";
-        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
-        helper.saveToXML(form, path);
+        String dir = chooseDirectory();
+        if (!dir.equals("")) {
+            String path = dir + "\\form.xml";
+            Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
+            helper.saveToXML(form, path);
+        }
     }
 
     @FXML
     private void loadFromXML() {
         FileChooser dialog = new FileChooser();
         dialog.setTitle("Выбор файла для сохранения..");
-        dialog.setInitialDirectory(new File("C:\\"));
+        dialog.setInitialDirectory(new File(System.getProperty("user.dir")));
         dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML файлы", "*.xml"));
         File result = dialog.showOpenDialog(MainApp.getWindow());
         if (result != null) {
@@ -78,7 +84,7 @@ public class AppController {
         dialog.setTitle("About");
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         try {
-            stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+            stage.getIcons().add(new Image(new FileInputStream(System.getProperty("user.dir") + "\\icon.png")));
         } catch (FileNotFoundException e) {
             System.err.println("Error: problems with icon file loading");
         }
@@ -142,8 +148,10 @@ public class AppController {
     private String chooseDirectory () {
         DirectoryChooser dialog = new DirectoryChooser();
         dialog.setTitle("Выбор директории для сохранения..");
-        dialog.setInitialDirectory(new File("C:\\"));
+        dialog.setInitialDirectory(new File(System.getProperty("user.dir")));
         File result = dialog.showDialog(MainApp.getWindow());
-        return result.toString();
+        if (result != null) {
+            return result.toString();
+        } else return "";
     }
 }
