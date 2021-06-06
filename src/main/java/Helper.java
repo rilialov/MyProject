@@ -7,12 +7,17 @@ import java.io.*;
 public class Helper {
 
     private static Form form;
+    private final String USER_DIR = System.getProperty("user.dir");
 
     public Helper() {
     }
 
     public Form getForm() {
         return form;
+    }
+
+    public String getUSER_DIR() {
+        return USER_DIR;
     }
 
     public void saveToXML(Form form, String path) {

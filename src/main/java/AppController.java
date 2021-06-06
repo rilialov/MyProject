@@ -13,7 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class AppController {
-    private final Helper helper = new Helper();
+    private final Helper helper = MainApp.getHelper();
+    private final String USER_DIR = helper.getUSER_DIR();
 
     @FXML
     private TextField course;
@@ -64,7 +65,7 @@ public class AppController {
     private void loadFromXML() {
         FileChooser dialog = new FileChooser();
         dialog.setTitle("Выбор файла для сохранения..");
-        dialog.setInitialDirectory(new File(System.getProperty("user.dir")));
+        dialog.setInitialDirectory(new File(USER_DIR));
         dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML файлы", "*.xml"));
         File result = dialog.showOpenDialog(MainApp.getWindow());
         if (result != null) {
@@ -84,7 +85,7 @@ public class AppController {
         dialog.setTitle("About");
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         try {
-            stage.getIcons().add(new Image(new FileInputStream(System.getProperty("user.dir") + "\\icon.png")));
+            stage.getIcons().add(new Image(new FileInputStream(USER_DIR + "\\icon.png")));
         } catch (FileNotFoundException e) {
             System.err.println("Error: problems with icon file loading");
         }
@@ -92,6 +93,16 @@ public class AppController {
         dialog.setContentText("This is program for practice");
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.show();
+    }
+
+    private String chooseDirectory () {
+        DirectoryChooser dialog = new DirectoryChooser();
+        dialog.setTitle("Выбор директории для сохранения..");
+        dialog.setInitialDirectory(new File(USER_DIR));
+        File result = dialog.showDialog(MainApp.getWindow());
+        if (result != null) {
+            return result.toString();
+        } else return "";
     }
 
     public AppController() {
@@ -143,15 +154,5 @@ public class AppController {
 
     public String getEmail() {
         return email.getText();
-    }
-
-    private String chooseDirectory () {
-        DirectoryChooser dialog = new DirectoryChooser();
-        dialog.setTitle("Выбор директории для сохранения..");
-        dialog.setInitialDirectory(new File(System.getProperty("user.dir")));
-        File result = dialog.showDialog(MainApp.getWindow());
-        if (result != null) {
-            return result.toString();
-        } else return "";
     }
 }

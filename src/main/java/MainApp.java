@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainApp extends Application {
+    private static final Helper helper = new Helper();
     private static AppController controller;
     private static Window window;
 
@@ -38,7 +39,7 @@ public class MainApp extends Application {
         window = stage.getScene().getWindow();
         stage.setTitle("Form");
         try {
-            stage.getIcons().add(new Image(new FileInputStream(System.getProperty("user.dir") + "\\icon.png")));
+            stage.getIcons().add(new Image(new FileInputStream(helper.getUSER_DIR() + "\\icon.png")));
         } catch (FileNotFoundException e) {
             System.err.println("Error: problems with icon file loading");
         }
@@ -54,5 +55,9 @@ public class MainApp extends Application {
 
     public static Window getWindow() {
         return window;
+    }
+
+    public static Helper getHelper() {
+        return helper;
     }
 }
