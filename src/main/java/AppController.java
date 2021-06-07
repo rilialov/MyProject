@@ -12,9 +12,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AppController {
+    private Window window = MainApp.getWindow();
     private final Helper helper = MainApp.getHelper();
     private final String USER_DIR = helper.getUSER_DIR();
+    private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
     @FXML
     private TextField course;
@@ -39,6 +45,7 @@ public class AppController {
 
     @FXML
     private void exit() {
+        logger.info("Exit.");
         Platform.exit();
     }
 
@@ -67,7 +74,7 @@ public class AppController {
         dialog.setTitle("Choosing file..");
         dialog.setInitialDirectory(new File(USER_DIR));
         dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML files", "*.xml"));
-        File result = dialog.showOpenDialog(MainApp.getWindow());
+        File result = dialog.showOpenDialog(window);
         if (result != null) {
             helper.readFromXML(result);
             Form form = helper.getForm();
@@ -77,6 +84,8 @@ public class AppController {
                 setDate(form.getDate());
                 setFirstName(form.getFirstName());
                 setLastName(form.getLastname());
+            } else {
+                logger.error("Incorrect document markup.");
             }
         }
     }
@@ -89,7 +98,7 @@ public class AppController {
         try {
             stage.getIcons().add(new Image(new FileInputStream(USER_DIR + "\\icon.png")));
         } catch (FileNotFoundException e) {
-            System.err.println("Error: problems with icon file loading");
+            logger.error("Failed to read icon file.");
         }
         dialog.setHeaderText("About this program");
         dialog.setContentText("This is program for practice");
@@ -101,7 +110,7 @@ public class AppController {
         DirectoryChooser dialog = new DirectoryChooser();
         dialog.setTitle("Choosing directory..");
         dialog.setInitialDirectory(new File(USER_DIR));
-        File result = dialog.showDialog(MainApp.getWindow());
+        File result = dialog.showDialog(window);
         if (result != null) {
             return result.toString();
         } else return "";

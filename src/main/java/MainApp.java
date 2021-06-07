@@ -9,11 +9,14 @@ import javafx.stage.Window;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainApp extends Application {
     private static final Helper helper = new Helper();
     private static AppController controller;
     private static Window window;
+    private static final Logger logger = LoggerFactory.getLogger(MainApp.class);
 
     public static void main(String[] args) {
         launch(args);
@@ -21,13 +24,14 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
+        logger.info("Starting application.");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("main.fxml"));
         AnchorPane pane = null;
         try {
             pane = loader.load();
         } catch (IOException e) {
-            System.err.println("Error: problems with fxml file loading");
+            logger.error("Failed to read fxml file.");
         }
 
         controller = loader.getController();
@@ -41,12 +45,13 @@ public class MainApp extends Application {
         try {
             stage.getIcons().add(new Image(new FileInputStream(helper.getUSER_DIR() + "\\icon.png")));
         } catch (FileNotFoundException e) {
-            System.err.println("Error: problems with icon file loading");
+            logger.error("Failed to read icon file.");
         }
         stage.setWidth(400);
         stage.setHeight(400);
         stage.setResizable(false);
         stage.show();
+        logger.info("Application started.");
     }
 
     public static AppController getController() {
