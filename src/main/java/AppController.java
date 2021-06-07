@@ -64,18 +64,20 @@ public class AppController {
     @FXML
     private void loadFromXML() {
         FileChooser dialog = new FileChooser();
-        dialog.setTitle("Выбор файла для сохранения..");
+        dialog.setTitle("Choosing file..");
         dialog.setInitialDirectory(new File(USER_DIR));
-        dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML файлы", "*.xml"));
+        dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML files", "*.xml"));
         File result = dialog.showOpenDialog(MainApp.getWindow());
         if (result != null) {
             helper.readFromXML(result);
             Form form = helper.getForm();
-            setCourse(form.getCourse());
-            setTrainer(form.getTrainer());
-            setDate(form.getDate());
-            setFirstName(form.getFirstName());
-            setLastName(form.getLastname());
+            if (form != null) {
+                setCourse(form.getCourse());
+                setTrainer(form.getTrainer());
+                setDate(form.getDate());
+                setFirstName(form.getFirstName());
+                setLastName(form.getLastname());
+            }
         }
     }
 
@@ -97,7 +99,7 @@ public class AppController {
 
     private String chooseDirectory () {
         DirectoryChooser dialog = new DirectoryChooser();
-        dialog.setTitle("Выбор директории для сохранения..");
+        dialog.setTitle("Choosing directory..");
         dialog.setInitialDirectory(new File(USER_DIR));
         File result = dialog.showDialog(MainApp.getWindow());
         if (result != null) {
