@@ -4,15 +4,24 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Helper {
 
     private static Form form;
+    private final String USER_DIR = System.getProperty("user.dir");
+    private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 
     public Helper() {
     }
 
     public Form getForm() {
         return form;
+    }
+
+    public String getUSER_DIR() {
+        return USER_DIR;
     }
 
     public void saveToXML(Form form, String path) {
@@ -23,7 +32,7 @@ public class Helper {
             File outFile = new File(path);
             m.marshal(form, outFile);
         } catch (Exception e) {
-            System.err.println("Error: problems in saveToXML()");
+            logger.error("Failed to write xml file.");
         }
     }
 
@@ -33,7 +42,7 @@ public class Helper {
             Unmarshaller un = jaxbContext.createUnmarshaller();
             form = (Form) un.unmarshal(path);
         } catch (JAXBException e) {
-            System.err.println("Error: problems in readFromXML()");
+            logger.error("Failed to read xml file.");
         }
     }
 
@@ -48,12 +57,10 @@ public class Helper {
                 controller.getPhone() + ";" +
                 controller.getEmail() + ";";
         String tmp = string1 + "\n" + string2;
-        try {
-            BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Cp1251"));
+        try (BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Cp1251"))) {
             bufWriter.write(tmp);
-            bufWriter.close();
         } catch (IOException e) {
-            System.err.println("Error: problems in saveToCSV()");
+            logger.error("Failed to write csv file.");
         }
     }
 }

@@ -12,8 +12,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AppController {
-    private final Helper helper = new Helper();
+    private Window window = MainApp.getWindow();
+    private final Helper helper = MainApp.getHelper();
+    private final String USER_DIR = helper.getUSER_DIR();
+    private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
     @FXML
     private TextField course;
@@ -38,37 +45,48 @@ public class AppController {
 
     @FXML
     private void exit() {
+        logger.info("Exit.");
         Platform.exit();
     }
 
     @FXML
     private void saveToCSV() {
-        String path = chooseDirectory() + "\\form.csv";
-        helper.saveToCSV(MainApp.getController(), path);
+        String dir = chooseDirectory();
+        if (!dir.equals("")) {
+            String path = dir + "\\form.csv";
+            helper.saveToCSV(MainApp.getController(), path);
+        }
     }
 
     @FXML
     private void saveToXML() {
-        String path = chooseDirectory() + "\\form.xml";
-        Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
-        helper.saveToXML(form, path);
+        String dir = chooseDirectory();
+        if (!dir.equals("")) {
+            String path = dir + "\\form.xml";
+            Form form = new Form(getCourse(), getTrainer(), getDate(), getFirstName(), getLastName(), getPhone(), getEmail());
+            helper.saveToXML(form, path);
+        }
     }
 
     @FXML
     private void loadFromXML() {
         FileChooser dialog = new FileChooser();
-        dialog.setTitle("Выбор файла для сохранения..");
-        dialog.setInitialDirectory(new File("C:\\"));
-        dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML файлы", "*.xml"));
-        File result = dialog.showOpenDialog(MainApp.getWindow());
+        dialog.setTitle("Choosing file..");
+        dialog.setInitialDirectory(new File(USER_DIR));
+        dialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML files", "*.xml"));
+        File result = dialog.showOpenDialog(window);
         if (result != null) {
             helper.readFromXML(result);
             Form form = helper.getForm();
-            setCourse(form.getCourse());
-            setTrainer(form.getTrainer());
-            setDate(form.getDate());
-            setFirstName(form.getFirstName());
-            setLastName(form.getLastname());
+            if (form != null) {
+                setCourse(form.getCourse());
+                setTrainer(form.getTrainer());
+                setDate(form.getDate());
+                setFirstName(form.getFirstName());
+                setLastName(form.getLastname());
+            } else {
+                logger.error("Incorrect document markup.");
+            }
         }
     }
 
@@ -78,14 +96,24 @@ public class AppController {
         dialog.setTitle("About");
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         try {
-            stage.getIcons().add(new Image(new FileInputStream("C:\\Java\\icon.png")));
+            stage.getIcons().add(new Image(new FileInputStream(USER_DIR + "\\icon.png")));
         } catch (FileNotFoundException e) {
-            System.err.println("Error: problems with icon file loading");
+            logger.error("Failed to read icon file.");
         }
         dialog.setHeaderText("About this program");
         dialog.setContentText("This is program for practice");
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.show();
+    }
+
+    private String chooseDirectory () {
+        DirectoryChooser dialog = new DirectoryChooser();
+        dialog.setTitle("Choosing directory..");
+        dialog.setInitialDirectory(new File(USER_DIR));
+        File result = dialog.showDialog(window);
+        if (result != null) {
+            return result.toString();
+        } else return "";
     }
 
     public AppController() {
@@ -137,13 +165,5 @@ public class AppController {
 
     public String getEmail() {
         return email.getText();
-    }
-
-    private String chooseDirectory () {
-        DirectoryChooser dialog = new DirectoryChooser();
-        dialog.setTitle("Выбор директории для сохранения..");
-        dialog.setInitialDirectory(new File("C:\\"));
-        File result = dialog.showDialog(MainApp.getWindow());
-        return result.toString();
     }
 }

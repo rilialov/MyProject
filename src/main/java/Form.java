@@ -44,11 +44,4 @@ public class Form {
         return lastname;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 }
